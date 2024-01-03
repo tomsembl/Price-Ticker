@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Price Ticker</title>
+        <meta charset="utf-8">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <style>
+            body{ 
+                font-family: "Poppins";
+                background-color: black;
+                min-height: 100vh;
+            }
+            .fs-1 {
+                font-size: 15vw !important; 
+                color: rgb(116, 116, 116);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+
+    <script type="text/babel">
+        function App() {
+            const spotUrl = 'wss://stream.binance.com:9443/ws/btcusdt@trade';
+            //const futuresUrl = 'wss://fstream.binance.com/ws/btcusdt@trade';
+            const [state, setState] = React.useState({ price: 0 });
+            const socket = new WebSocket(spotUrl);
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                setState({ price: data.p });
+            }
+            //React.UseEffect(() => {
+            //}, []);
+
+            return (
+                <div class="is-flex is-justify-content-center	">
+                    <h1 class="title fs-1">{`\$${parseFloat(state.price).toFixed(0)}`}</h1>
+                </div>
+            )            
+        }
+        ReactDOM.render(<App />, document.querySelector("#app"));
+    </script>
+</html>
