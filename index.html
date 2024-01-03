@@ -6,14 +6,15 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        <!-- <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'> -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
         <style>
             body{ 
-                font-family: "Poppins";
+                font-family: "Roboto Mono", sans-serif;
                 background-color: black;
                 min-height: 100vh;
             }
@@ -41,7 +42,7 @@
             //}, []);
 
             return (
-                <div class="is-flex is-justify-content-center	">
+                <div class="is-flex is-justify-content-center is-align-content-center">
                     <h1 class="title fs-1">{`\$${parseFloat(state.price).toFixed(0)}`}</h1>
                 </div>
             )            
