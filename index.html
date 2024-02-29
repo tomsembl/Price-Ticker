@@ -30,14 +30,13 @@
 
     <script type="text/babel">
         function App() {
-            const spotUrl = 'wss://stream.binance.com:9443/ws/btcusdt@trade';
+            const url = 'https://api.coinbase.com/v2/exchange-rates?currency=ETH';
             //const futuresUrl = 'wss://fstream.binance.com/ws/btcusdt@trade';
             const [state, setState] = React.useState({ price: 0 });
-            const socket = new WebSocket(spotUrl);
-            socket.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                setState({ price: data.p });
-            }
+            const response = await fetch(url);
+            const json = await response.json();
+            setState({ price: json.data.rates.USD });
+            
             //React.UseEffect(() => {
             //}, []);
 
