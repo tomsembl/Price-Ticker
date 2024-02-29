@@ -30,19 +30,30 @@
 
     <script type="text/babel">
         function App() {
-            const url = 'https://api.coinbase.com/v2/exchange-rates?currency=ETH';
-            //const futuresUrl = 'wss://fstream.binance.com/ws/btcusdt@trade';
-            const [state, setState] = React.useState({ price: 0 });
-            const response = await fetch(url);
-            const json = await response.json();
-            setState({ price: json.data.rates.USD });
-            
-            //React.UseEffect(() => {
-            //}, []);
+            const url = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC';
+            const [state, setState] = React.useState({ priceUSD: 0 , priceAUD: 0});
+
+            React.useEffect(() => {
+                function getData() {
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        setState({ 
+                            priceUSD: data.data.rates.USD
+                            ,priceAUD: data.data.rates.AUD
+                        })
+                        console.log(data.data.rates.AUD)
+                    })
+                }
+                const intervalId = setInterval(getData, 3000);
+                // Clear the interval when the component is unmounted or before setting up a new one
+                return () => clearInterval(intervalId);
+            }, []); // Empty dependency array means this effect runs once on mount and clean up on unmount
 
             return (
-                <div class="is-flex is-justify-content-center is-align-content-center">
-                    <h1 class="title fs-1">{`\$${parseFloat(state.price).toFixed(0)}`}</h1>
+                <div class="is-flex is-justify-content-center is-align-content-center is-flex-direction-column">
+                    <h1 class="title fs-1">{`${parseFloat(state.priceUSD).toFixed(0)} USD`}</h1>
+                    <h1 class="title fs-1">{`${parseFloat(state.priceAUD).toFixed(0)} AUD`}</h1>
                 </div>
             )            
         }
