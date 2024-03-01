@@ -32,23 +32,30 @@
         function App() {
             const url = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC';
             const [state, setState] = React.useState({ priceUSD: 0 , priceAUD: 0});
+            
+            async function getJsonFromUrl(url) {
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            function getPriceData() {
+                getJsonFromUrl(url).then(data => {
+                    setState({ 
+                        priceUSD: data.data.rates.USD
+                        ,priceAUD: data.data.rates.AUD
+                    })
+                });
+            }
 
             React.useEffect(() => {
-                function getData() {
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        setState({ 
-                            priceUSD: data.data.rates.USD
-                            ,priceAUD: data.data.rates.AUD
-                        })
-                        console.log(data.data.rates.AUD)
-                    })
-                }
-                const intervalId = setInterval(getData, 3000);
-                // Clear the interval when the component is unmounted or before setting up a new one
-                return () => clearInterval(intervalId);
-            }, []); // Empty dependency array means this effect runs once on mount and clean up on unmount
+                getPriceData();
+                const intervalId = setInterval(getPriceData, 5000);
+            }, []); 
 
             return (
                 <div class="is-flex is-justify-content-center is-align-content-center is-flex-direction-column">
