@@ -19,8 +19,14 @@
                 min-height: 100vh;
             }
             .fs-1 {
-                font-size: 15vw !important; 
-                color: rgb(116, 116, 116);
+                font-size: 14vw !important; 
+                color: rgb(255, 255, 255);
+                font-weight: 400;
+            }
+            .fs-2 {
+                font-size: 6vw !important; 
+                color: rgb(185, 185, 185);
+                font-weight: 600;
             }
         </style>
     </head>
@@ -58,9 +64,10 @@
             }, []); 
 
             return (
-                <div class="is-flex is-justify-content-center is-align-content-center is-flex-direction-column">
-                    <h1 class="title fs-1">{`${parseFloat(state.priceUSD).toFixed(0)} USD`}</h1>
-                    <h1 class="title fs-1">{`${parseFloat(state.priceAUD).toFixed(0)} AUD`}</h1>
+                <div class="is-flex is-justify-content-center is-align-content-center has-text-centered	 is-flex-direction-column">
+                    <h1 class="fs-2">Bitcoin Price</h1>
+                    <h1 class="title fs-1">{`\$${parseFloat(state.priceUSD).toFixed(0)} USD`}</h1>
+                    <h1 class="title fs-1">{`\$${parseFloat(state.priceAUD).toFixed(0)} AUD`}</h1>
                 </div>
             )            
         }
