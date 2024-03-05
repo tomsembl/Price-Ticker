@@ -40,7 +40,7 @@ while True:
                 btc += buySellAmount/btcPrice
                 stack = btc * btcPrice
                 fiat -= buySellAmount
-            #else: break
+            else: break
             trade = {"date":x["d"],"price":btcPrice,"risk":round(risk,2),"fiat":round(fiat,2),"trade":round(buySellAmount,2) if doTrade else 0,"btc":round(btc,5)}
             tradeHistory.append(trade)
         finalWorth = fiat#btc * btcPrice + fiat

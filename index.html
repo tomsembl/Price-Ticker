@@ -63,6 +63,11 @@
                 const intervalId = setInterval(getPriceData, 5000);
             }, []); 
 
+            React.useEffect(() => {
+                //change title
+                document.title = `\$${parseFloat(state.priceUSD).toFixed(0)} USD`;
+            },[state.priceUSD])
+
             return (
                 <div class="is-flex is-justify-content-center is-align-content-center has-text-centered	 is-flex-direction-column">
                     <h1 class="fs-2">Bitcoin Price</h1>
