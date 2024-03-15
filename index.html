@@ -28,6 +28,9 @@
                 color: rgb(185, 185, 185);
                 font-weight: 600;
             }
+            .red {
+                color: red !important;
+            }
         </style>
     </head>
     <body>
@@ -37,24 +40,38 @@
     <script type="text/babel">
         function App() {
             const url = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC';
-            const [state, setState] = React.useState({ priceUSD: 0 , priceAUD: 0});
+            const [state, setState] = React.useState({ priceUSD: 0 , priceAUD: 0, isConnected: true});
             
+
             async function getJsonFromUrl(url) {
                 try {
+                    //const controller = new AbortController();
+                    //const id = setTimeout(() => controller.abort(), 60*1000)
+                    //const response = await fetch(url, { signal: controller.signal });
                     const response = await fetch(url);
                     const data = await response.json();
-                    return data;
+                    return {isSuccess:true, data:data};
                 } catch (error) {
-                    console.error('Error:', error);
+                    //console.error('Error:', error);
+                    return {isSuccess:false, data:null};
                 }
             }
             
             function getPriceData() {
-                getJsonFromUrl(url).then(data => {
-                    setState({ 
-                        priceUSD: data.data.rates.USD
-                        ,priceAUD: data.data.rates.AUD
-                    })
+                getJsonFromUrl(url).then(x => {
+                    if (!x.isSuccess) {
+                        setState((prevState)=>({
+                            ...prevState,
+                            isConnected: false 
+                        }));
+                        return;
+                    }
+                    setState((prevState)=>({
+                        ...prevState,
+                        priceUSD: x.data.data.rates.USD
+                        ,priceAUD: x.data.data.rates.AUD
+                        ,isConnected: true 
+                    }));
                 });
             }
 
@@ -69,10 +86,10 @@
             },[state.priceUSD])
 
             return (
-                <div class="is-flex is-justify-content-center is-align-content-center has-text-centered	 is-flex-direction-column">
-                    <h1 class="fs-2">Bitcoin Price</h1>
-                    <h1 class="title fs-1">{`\$${parseFloat(state.priceUSD).toFixed(0)} USD`}</h1>
-                    <h1 class="title fs-1">{`\$${parseFloat(state.priceAUD).toFixed(0)} AUD`}</h1>
+                <div class={`is-flex is-justify-content-center is-align-content-center has-text-centered is-flex-direction-column`}>
+                    <h1 class={`fs-2 ${state.isConnected ? "" : "red"}`}>Bitcoin Price</h1>
+                    <h1 class={`title fs-1 ${state.isConnected ? "" : "red"}`}>{`\$${parseFloat(state.priceUSD).toFixed(0)} USD`}</h1>
+                    <h1 class={`title fs-1 ${state.isConnected ? "" : "red"}`}>{`\$${parseFloat(state.priceAUD).toFixed(0)} AUD`}</h1>
                 </div>
             )            
         }

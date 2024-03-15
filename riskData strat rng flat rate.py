@@ -48,7 +48,7 @@ while True:
     if bestWorth < finalWorth:
         bestWorth = finalWorth
         bestBuySellAmounts = newBuySellAmounts
-        #for x in tradeHistory: print(x)
+        for trade in tradeHistory: print(trade)
         bestList = [x if i>=minRisk and i<=maxRisk else 0 for i,x in enumerate(bestBuySellAmounts)]
         print(f"New best worth: {bestWorth:.2f}, buySellAmounts: {bestList} endDate: {x['d']}")
         print([x for x in tradeHistory if "2020-11-20" < x["date"] <= "2020-11-27"])
